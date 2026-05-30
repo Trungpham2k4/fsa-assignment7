@@ -94,10 +94,12 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public List<UserVO> findAllUsersWithNumberOfTransactions(){
-        String sql = "SELECT user_id, username, COUNT(*) as totalTransaction FROM dbo.user " +
-                "JOIN dbo.transaction_history ON dbo.user.user_id = dbo.transaction_history.user_id " +
-                "GROUP BY user_id, username" +
-                "ORDER BY totalTransaction DESC";
+        String sql = """
+                SELECT user_id, username, COUNT(*) as totalTransaction FROM dbo.user 
+                JOIN dbo.transaction_history ON dbo.user.user_id = dbo.transaction_history.user_id
+                GROUP BY user_id, username
+                ORDER BY totalTransaction DESC
+                """;
         try(Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             var resultSet = preparedStatement.executeQuery();
