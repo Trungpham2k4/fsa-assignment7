@@ -4,12 +4,7 @@ import fa.training.entity.TransactionHistory;
 
 import java.util.List;
 
-public interface TransactionHistoryDAO {
-    void save(TransactionHistory transactionHistory);
-    void update(TransactionHistory transactionHistory);
-    void delete(int id);
-    TransactionHistory findById(int id);
-    List<TransactionHistory> findAll();
+public interface TransactionHistoryDAO extends CommonDAO<TransactionHistory> {
+    int save(TransactionHistory transactionHistory);
     List<TransactionHistory> findByUserId(int userId);
-
 }

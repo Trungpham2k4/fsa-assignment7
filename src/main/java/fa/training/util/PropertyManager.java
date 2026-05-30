@@ -10,7 +10,7 @@ public class PropertyManager {
     static {
         try(InputStream input = PropertyManager
                 .class
-                .getResourceAsStream("database.properties")) {
+                .getResourceAsStream("/database.properties")) {
             properties.load(input);
         }catch (IOException e){
             throw new RuntimeException(e);

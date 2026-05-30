@@ -11,8 +11,8 @@ import java.util.List;
 public class TransactionHistoryDAOImpl implements TransactionHistoryDAO {
 
     @Override
-    public void save(TransactionHistory transactionHistory) {
-        String sql = "CALL dbo.insert_transaction(?,?,?,?,?,?)";
+    public int save(TransactionHistory transactionHistory) {
+        String sql = "CALL dbo.insert_transaction(?,?,?,?,?,?,?)";
         try(Connection connection = ConnectionManager.getConnection();
             CallableStatement callableStatement = connection.prepareCall(sql)) {
             callableStatement.setInt(1, transactionHistory.getUserId());
@@ -21,10 +21,14 @@ public class TransactionHistoryDAOImpl implements TransactionHistoryDAO {
             callableStatement.setString(4, transactionHistory.getAction());
             callableStatement.setString(5, transactionHistory.getNote());
             callableStatement.setTimestamp(6, Timestamp.valueOf(transactionHistory.getCreatedDateTime()));
-            callableStatement.executeUpdate();
+            callableStatement.registerOutParameter(7, Types.INTEGER);
+            callableStatement.execute();
+            int transactionId = callableStatement.getInt(7);
+            return transactionId;
         }catch (SQLException e){
             System.out.println("Error: " + e);
         }
+        return -1;
     }
 
     @Override

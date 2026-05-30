@@ -5,11 +5,7 @@ import fa.training.entity.User;
 
 import java.util.List;
 
-public interface UserDAO {
+public interface UserDAO extends CommonDAO<User> {
     void save(User user);
-    void update(User user);
-    void delete(int id);
-    User findById(int id);
-    List<User> findAll();
     List<UserVO> findAllUsersWithNumberOfTransactions();
 }

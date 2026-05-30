@@ -190,7 +190,12 @@ public class MainController {
         transactionHistory.setAction(action);
         transactionHistory.setNote(note);
         transactionHistory.setCreatedDateTime(createdDateTime);
-        transactionHistoryService.add(transactionHistory);
+        int transactionId = transactionHistoryService.add(transactionHistory);
+        if(transactionId == -1){
+            System.out.println("Transaction creation failed");
+        }else{
+            System.out.println("Transaction created with id: " + transactionId);
+        }
     }
 
     private static void updateTransaction(){
@@ -256,16 +261,6 @@ public class MainController {
         }
     }
 
-    private static double inputValidDoubleField(String prompt, String message, Function<Double, Boolean> validator){
-        while(true){
-            double input = getDoubleInput(prompt);
-            if(validator.apply(input)){
-                return input;
-            }
-            System.out.println(message);
-        }
-    }
-
     private static int inputValidIntField(String prompt, String message, Function<Integer, Boolean> validator){
         while(true){
             int input = getIntInput(prompt);
@@ -284,29 +279,6 @@ public class MainController {
                 return Integer.parseInt(scanner.nextLine());
             }catch (NumberFormatException e){
                 System.out.println("Please enter an integer");
-            }
-        }
-    }
-
-    private static double getDoubleInput(String prompt){
-        while(true){
-            try{
-                System.out.print(prompt);
-                return Double.parseDouble(scanner.nextLine());
-            }catch (NumberFormatException e){
-                System.out.println("Please enter a double value");
-            }
-        }
-    }
-
-    private static String getStringInput(String prompt) {
-        while(true){
-            System.out.print(prompt);
-            String input = scanner.nextLine();
-            if(Validator.isBlank(input)) {
-                System.out.println("Don't let the input blank");
-            }else{
-                return input.trim();
             }
         }
     }

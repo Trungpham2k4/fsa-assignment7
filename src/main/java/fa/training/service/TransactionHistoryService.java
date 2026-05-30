@@ -8,8 +8,8 @@ import java.util.List;
 
 public class TransactionHistoryService {
     private final TransactionHistoryDAO transactionHistoryDAO = new TransactionHistoryDAOImpl();
-    public void add(TransactionHistory transactionHistory) {
-        transactionHistoryDAO.save(transactionHistory);
+    public int add(TransactionHistory transactionHistory) {
+        return transactionHistoryDAO.save(transactionHistory);
     }
     public List<TransactionHistory> getAll() {
         return transactionHistoryDAO.findAll();

@@ -15,7 +15,7 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
     @Override
     public void save(User user) {
-        String sql = "INSERT INTO dbo.user(user_name, email, point, date_of_birth) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO dbo.user(username, email, point, date_of_birth) VALUES (?,?,?,?)";
         try(Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getUsername());
@@ -30,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void update(User user) {
-        String sql = "UPDATE dbo.user SET user_name = ?, email = ?, point = ?, date_of_birth = ? WHERE user_id = ?";
+        String sql = "UPDATE dbo.user SET username = ?, email = ?, point = ?, date_of_birth = ? WHERE user_id = ?";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ){
@@ -94,7 +94,10 @@ public class UserDAOImpl implements UserDAO {
     }
 
     public List<UserVO> findAllUsersWithNumberOfTransactions(){
-        String sql = "SELECT user_id, username, COUNT(*) as totalTransaction FROM dbo.user JOIN dbo.transaction_history ON dbo.user.user_id = dbo.transaction_history.user_id GROUP BY user_id, username";
+        String sql = "SELECT user_id, username, COUNT(*) as totalTransaction FROM dbo.user " +
+                "JOIN dbo.transaction_history ON dbo.user.user_id = dbo.transaction_history.user_id " +
+                "GROUP BY user_id, username" +
+                "ORDER BY totalTransaction DESC";
         try(Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             var resultSet = preparedStatement.executeQuery();
