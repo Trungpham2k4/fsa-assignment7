@@ -39,6 +39,7 @@ public class MainController {
     }
 
     private static void handleUserManagement(){
+        MainView.showUserManagementMenu();
         int choice = inputValidOption(1, 6);
         switch(choice){
             case 1 -> addUser();
@@ -51,6 +52,7 @@ public class MainController {
     }
 
     private static void handleCustomerManagement(){
+        MainView.showCustomerManagementMenu();
         int choice = inputValidOption(1, 4);
         switch (choice){
             case 1 -> addCustomer();
@@ -61,6 +63,7 @@ public class MainController {
     }
 
     private static void handleTransactionHistoryManagement(){
+        MainView.showTransactionHistoryMenu();
         int choice = inputValidOption(1, 5);
         switch (choice){
             case 1 -> createTransaction();
@@ -89,9 +92,10 @@ public class MainController {
         System.out.println("Update user");
         int userId = inputValidIntField("User ID: ", "User ID must be a positive integer", id -> id > 0);
         String userName = inputValidStringField("User name: ", "User name can't be blank", Validator::isNotBlank);
-        String email = inputValidStringField("Email: ", "Invalid email format", Validator::isNotBlank);
+        String email = inputValidStringField("Email: ", "Invalid email format", Validator::isValidEmail);
         LocalDate localDate = LocalDate.parse(inputValidStringField("Date of birth (dd-MM-yyyy): ", "Invalid date format", Validator::isValidDate), DATE_FORMATTER);
         User user = new User();
+        user.setUserId(userId);
         user.setUsername(userName);
         user.setEmail(email);
         user.setDateOfBirth(localDate);
@@ -179,8 +183,9 @@ public class MainController {
         System.out.println("Create transaction");
         int userId = inputValidIntField("User ID: ", "User ID must be a positive integer", id -> id > 0);
         int customerId = inputValidIntField("Customer ID: ", "Customer ID must be a positive integer", id -> id > 0);
-        long point = getIntInput("Point: ");
+        long point = inputValidIntField("Point: ", "Point must be a positive integer", id -> id > 0);
         String action = inputValidStringField("Action: ", "Action can't be blank", Validator::isValidAction);
+        System.out.print("Note: ");
         String note = scanner.nextLine();
         LocalDateTime createdDateTime = LocalDateTime.parse(inputValidStringField("Created date time (dd-MM-yyyy HH:mm:ss): ", "Invalid date time format", Validator::isValidDateTime), DATE_TIME_FORMATTER);
         TransactionHistory transactionHistory = new TransactionHistory();

@@ -33,16 +33,11 @@ public class TransactionHistoryDAOImpl implements TransactionHistoryDAO {
 
     @Override
     public void update(TransactionHistory transactionHistory) {
-            String sql = "UPDATE dbo.transaction_history SET user_id = ?, customer_id = ?, point = ?, action = ?, note = ?, created_date_time = ? WHERE transaction_id = ?";
+            String sql = "UPDATE dbo.transaction_history SET note = ? WHERE transaction_id = ?";
             try(Connection connection = ConnectionManager.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setInt(1, transactionHistory.getUserId());
-                preparedStatement.setInt(2, transactionHistory.getCustomerId());
-                preparedStatement.setLong(3, transactionHistory.getPoint());
-                preparedStatement.setString(4, transactionHistory.getAction());
-                preparedStatement.setString(5, transactionHistory.getNote());
-                preparedStatement.setTimestamp(6, Timestamp.valueOf(transactionHistory.getCreatedDateTime()));
-                preparedStatement.setInt(7, transactionHistory.getTransactionId());
+                preparedStatement.setString(1, transactionHistory.getNote());
+                preparedStatement.setInt(2, transactionHistory.getTransactionId());
                 preparedStatement.executeUpdate();
             }catch (SQLException e){
                 System.out.println("Error: " + e);
